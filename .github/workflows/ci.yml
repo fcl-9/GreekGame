@@ -72,26 +72,26 @@ jobs:
         path: ./coverage/
       continue-on-error: true
 
-  docker-build:
-    runs-on: ubuntu-latest
-    name: Build Docker Image
-    needs: build-and-test
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-    - name: Build Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: ./GreekGame.API
-        push: false
-        tags: greekgame-api:latest
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+#  docker-build:
+#    runs-on: ubuntu-latest
+#    name: Build Docker Image
+#    needs: build-and-test
+#
+#    steps:
+#    - name: Checkout code
+#      uses: actions/checkout@v4
+#
+#    - name: Set up Docker Buildx
+#      uses: docker/setup-buildx-action@v3
+#
+#    - name: Build Docker image
+#      uses: docker/build-push-action@v5
+#      with:
+#        context: ./GreekGame.API
+#        push: false
+#        tags: greekgame-api:latest
+#        cache-from: type=gha
+#        cache-to: type=gha,mode=max
 
   security-scan:
     runs-on: ubuntu-latest
