@@ -15,4 +15,5 @@ public sealed class City
 
     public DateTime LastUpdated { get; set; }
     public ICollection<Building> Buildings { get; init; } = new HashSet<Building>();
+    public ICollection<Event> ActiveEvents { get; set; }
 }

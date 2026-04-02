@@ -37,9 +37,20 @@ public class CitiesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id)
+    public async Task<IActionResult> GetCity(Guid id)
     {
         var city = await _cityService.GetCityAsync(id);
         return city is null ? NotFound() : Ok(city);
+    }
+
+    [HttpGet("{id}/events")]
+    public async Task<IActionResult> GetEvents(Guid id)
+    {
+        var city = await _cityService.GetCityAsync(id);
+        if (city is null)
+            return NotFound();
+        var activeEvents = city.ActiveEvents;
+
+        return activeEvents.Count <= 0 ? NotFound() : Ok(city.ActiveEvents);
     }
 }

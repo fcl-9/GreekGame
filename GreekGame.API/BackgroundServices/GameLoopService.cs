@@ -63,4 +63,25 @@ public class GameLoopService : BackgroundService
         // 💰 Economy
         city.Money += city.Population * 0.5m;
     }
+
+    private void TriggerRandomEvent(City city)
+    {
+        var rand = new Random();
+        if (rand.NextDouble() < 0.1)
+        {
+            var parsingResult = Enum.TryParse<EventType>(rand.Next(0, 3).ToString(), out var eventType);
+            if (!parsingResult)
+            {
+                throw new InvalidEventTypeException("Failed to parse random event type.");
+            }
+            city.ActiveEvents.Add(new Event()
+            {
+                Id = Guid.NewGuid(),
+                CityId = city.Id,
+                Type = eventType,
+                DurationTicks = 3,
+                RemainingTicks = 3
+            });
+        }
+    }
 }
