@@ -1,7 +1,12 @@
-﻿namespace GreekGame.API.Domain;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace GreekGame.API.Domain;
 
 public sealed class City
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public Guid Id { get; init; }
 
     public int Population { get; set; }

@@ -20,7 +20,7 @@ public class CityService : ICityService
             Id = Guid.NewGuid(),
             Population = 10,
             Food = 50,
-            Money = 100,
+            Money = 200,
             LastUpdated = DateTime.UtcNow
         };
 
@@ -75,7 +75,7 @@ public class CityService : ICityService
 
         var city = await _db.Cities.FindAsync(building.CityId);
 
-        if (city is null || city.Money <= cost)
+        if (city is null || city.Money < cost)
         {
             return false;
         }
