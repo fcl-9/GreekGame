@@ -84,4 +84,21 @@ public class GameLoopService : BackgroundService
             });
         }
     }
+
+    private void UpdateMarket(Market market)
+    {
+        if (market.TotalSupply == 0) market.TotalSupply = 1;
+        if (market.TotalDemand == 0) market.TotalDemand = 1;
+
+        var ratio = (decimal)market.TotalDemand / market.TotalSupply;
+
+        market.FoodPrice *= ratio;
+
+        // Clamp price (avoid insane values)
+        market.FoodPrice = Math.Clamp(market.FoodPrice, 1, 100);
+
+        // Reset for next tick
+        market.TotalSupply = 0;
+        market.TotalDemand = 0;
+    }
 }
