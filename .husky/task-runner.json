@@ -1,0 +1,31 @@
+{
+   "$schema": "https://alirezanet.github.io/Husky.Net/schema.json",
+   "tasks": [
+     {
+       "name": "Run JB Clean Up Code",
+       "command": "cmd",
+       "pathMode": "relative",
+       "args": [
+         "/c",
+         "dotnet",
+         "jb",
+         "cleanupcode",
+         "proj.sln",
+         "--profile=Team: Full Cleanup",
+         "--include=${args}"
+       ],
+       "group": "pre-commit"
+     },{
+       "name": "dotnet-format",
+       "group": "pre-commit",
+       "command": "dotnet",
+       "args": ["dotnet-format", "--include", "${staged}"],
+       "include": ["**/*.cs", "**/*.vb"]
+     },{
+       "name": "run-tests",
+       "group": "pre-push",
+       "command": "dotnet",
+       "args": ["test", "--no-build", "--verbosity", "minimal"]
+     }
+   ]
+}
