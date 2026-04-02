@@ -30,7 +30,7 @@ public class CityServiceTests
         Assert.NotEqual(Guid.Empty, city.Id);
         Assert.Equal(10, city.Population);
         Assert.Equal(50, city.Food);
-        Assert.Equal(100m, city.Money);
+        Assert.Equal(200m, city.Money);
         Assert.NotEqual(default, city.LastUpdated);
         Assert.Empty(city.Buildings);
     }
