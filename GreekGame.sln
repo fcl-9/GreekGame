@@ -2,6 +2,13 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreekGame.API", "GreekGame.API\GreekGame.API.csproj", "{42941E7A-FCCE-4D35-8AF9-8F7349532CD5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreekGame.Tests", "GreekGame.Tests\GreekGame.Tests.csproj", "{AAA9C04C-955C-4AAB-8E08-2E67DF588364}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{449C61D5-41B2-47E4-9CB6-D0C197CE5E7A}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +19,9 @@ Global
 		{42941E7A-FCCE-4D35-8AF9-8F7349532CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42941E7A-FCCE-4D35-8AF9-8F7349532CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42941E7A-FCCE-4D35-8AF9-8F7349532CD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAA9C04C-955C-4AAB-8E08-2E67DF588364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAA9C04C-955C-4AAB-8E08-2E67DF588364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAA9C04C-955C-4AAB-8E08-2E67DF588364}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAA9C04C-955C-4AAB-8E08-2E67DF588364}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
