@@ -10,7 +10,7 @@ on:
 env:
   DOTNET_VERSION: '10.0.x'
   BUILD_CONFIGURATION: 'Release'
-  SOLUTION_PATH: './GreekGame.sln'
+  SOLUTION_PATH: './GreekGame.slnx'
 
 jobs:
   build-and-test:

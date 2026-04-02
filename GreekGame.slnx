@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/pipelines/">
+    <File Path=".github/workflows/ci.yml" />
+  </Folder>
+  <Project Path="GreekGame.API/GreekGame.API.csproj" />
+  <Project Path="GreekGame.Tests/GreekGame.Tests.csproj" />
+</Solution>
