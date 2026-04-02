@@ -1,17 +1,14 @@
-﻿namespace GreekGame.API.BackgroundServices;
-
-using GreekGame.API.Domain;
+﻿using GreekGame.API.Domain;
 using GreekGame.API.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+
+namespace GreekGame.API.BackgroundServices;
 
 public class GameLoopService : BackgroundService
 {
     private readonly IServiceProvider _services;
 
-    public GameLoopService(IServiceProvider services)
-    {
-        this._services = services;
-    }
+    public GameLoopService(IServiceProvider services) => _services = services;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -28,13 +25,10 @@ public class GameLoopService : BackgroundService
                 var seconds = (now - city.LastUpdated).TotalSeconds;
 
                 // 🧠 Basic simulation
-                int ticks = (int)(seconds / 5); // 1 tick per 5 seconds
+                var ticks = (int)(seconds / 5); // 1 tick per 5 seconds
                 if (ticks <= 0) continue;
 
-                for (int i = 0; i < ticks; i++)
-                {
-                    UpdateCity(city);
-                }
+                for (var i = 0; i < ticks; i++) UpdateCity(city);
 
                 city.LastUpdated = now;
             }
@@ -70,11 +64,8 @@ public class GameLoopService : BackgroundService
         if (rand.NextDouble() < 0.1)
         {
             var parsingResult = Enum.TryParse<EventType>(rand.Next(0, 3).ToString(), out var eventType);
-            if (!parsingResult)
-            {
-                throw new InvalidEventTypeException("Failed to parse random event type.");
-            }
-            city.ActiveEvents.Add(new Event()
+            if (!parsingResult) throw new InvalidEventTypeException("Failed to parse random event type.");
+            city.ActiveEvents.Add(new Event
             {
                 Id = Guid.NewGuid(),
                 CityId = city.Id,

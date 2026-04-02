@@ -1,17 +1,18 @@
-﻿namespace GreekGame.Tests;
-
+﻿using System.Reflection;
 using GreekGame.API.BackgroundServices;
 using GreekGame.API.Domain;
 using GreekGame.API.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
+namespace GreekGame.Tests;
+
 public class GameLoopServiceTests
 {
     private GameDbContext CreateInMemoryContext()
     {
         var options = new DbContextOptionsBuilder<GameDbContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
 
         return new GameDbContext(options);
@@ -157,10 +158,7 @@ public class GameLoopServiceTests
         var maxPopulation = 5 * 2; // 10 max
 
         // Act
-        for (int i = 0; i < 100; i++)
-        {
-            InvokeUpdateCity(service, city);
-        }
+        for (var i = 0; i < 100; i++) InvokeUpdateCity(service, city);
 
         // Assert
         Assert.True(city.Population <= maxPopulation);
@@ -188,7 +186,7 @@ public class GameLoopServiceTests
         InvokeUpdateCity(service, city);
 
         // Assert
-        var expectedMoney = initialMoney + (city.Population * 0.5m);
+        var expectedMoney = initialMoney + city.Population * 0.5m;
         Assert.Equal(expectedMoney, city.Money);
     }
 
@@ -210,10 +208,7 @@ public class GameLoopServiceTests
         };
 
         // Act
-        for (int i = 0; i < 100; i++)
-        {
-            InvokeUpdateCity(service, city);
-        }
+        for (var i = 0; i < 100; i++) InvokeUpdateCity(service, city);
 
         // Assert
         Assert.True(city.Population >= 0);
@@ -240,7 +235,7 @@ public class GameLoopServiceTests
             }
         };
         var initialFood = city.Food;
-        var expectedProduction = (5 * 1) + (5 * 2); // 5 + 10 = 15
+        var expectedProduction = 5 * 1 + 5 * 2; // 5 + 10 = 15
         var expectedFood = initialFood + expectedProduction - city.Population; // 50 + 15 - 5 = 60
 
         // Act
@@ -281,7 +276,7 @@ public class GameLoopServiceTests
         // population will increase by 1
         var expectedPopulation = initialPopulation + 1; // 11
         var expectedFood = foodAfterProduction - initialPopulation; // 60 - 10 = 50
-        var expectedMoney = initialMoney + (expectedPopulation * 0.5m); // 100 + (11 * 0.5) = 105.5
+        var expectedMoney = initialMoney + expectedPopulation * 0.5m; // 100 + (11 * 0.5) = 105.5
 
         // Act
         InvokeUpdateCity(service, city);
@@ -456,7 +451,7 @@ public class GameLoopServiceTests
         var initialEventCount = city.ActiveEvents.Count;
 
         // Act - Call multiple times to increase chance of triggering
-        for (int i = 0; i < 1000; i++)
+        for (var i = 0; i < 1000; i++)
         {
             InvokeTriggerRandomEvent(service, city);
             if (city.ActiveEvents.Count > initialEventCount)
@@ -491,7 +486,7 @@ public class GameLoopServiceTests
         };
 
         // Act - Call multiple times to increase chance of triggering
-        for (int i = 0; i < 1000; i++)
+        for (var i = 0; i < 1000; i++)
         {
             InvokeTriggerRandomEvent(service, city);
             if (city.ActiveEvents.Count > 0)
@@ -525,10 +520,7 @@ public class GameLoopServiceTests
         // Act & Assert - Should not throw
         var exception = Record.Exception(() =>
         {
-            for (int i = 0; i < 1000; i++)
-            {
-                InvokeTriggerRandomEvent(service, city);
-            }
+            for (var i = 0; i < 1000; i++) InvokeTriggerRandomEvent(service, city);
         });
 
         Assert.Null(exception);
@@ -548,25 +540,23 @@ public class GameLoopServiceTests
     private static void InvokeUpdateCity(GameLoopService service, City city)
     {
         var method = typeof(GameLoopService).GetMethod("UpdateCity",
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            BindingFlags.NonPublic | BindingFlags.Instance);
         method?.Invoke(service, new object[] { city });
     }
 
     private static void InvokeUpdateMarket(GameLoopService service, Market market)
     {
         var method = typeof(GameLoopService).GetMethod("UpdateMarket",
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            BindingFlags.NonPublic | BindingFlags.Instance);
         method?.Invoke(service, new object[] { market });
     }
 
     private static void InvokeTriggerRandomEvent(GameLoopService service, City city)
     {
         var method = typeof(GameLoopService).GetMethod("TriggerRandomEvent",
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            BindingFlags.NonPublic | BindingFlags.Instance);
         method?.Invoke(service, new object[] { city });
     }
 
     #endregion
 }
-
-

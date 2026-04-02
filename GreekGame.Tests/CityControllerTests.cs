@@ -1,15 +1,15 @@
-﻿namespace GreekGame.Tests;
-
-using GreekGame.API.API.Controllers;
+﻿using GreekGame.API.API.Controllers;
 using GreekGame.API.Application;
 using GreekGame.API.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
+namespace GreekGame.Tests;
+
 public class CityControllerTests
 {
-    private readonly Mock<ICityService> _mockCityService;
     private readonly CitiesController _controller;
+    private readonly Mock<ICityService> _mockCityService;
 
     public CityControllerTests()
     {
@@ -140,11 +140,9 @@ public class CityControllerTests
         var buildingTypes = new[] { BuildingType.Farm, BuildingType.House };
 
         foreach (var buildingType in buildingTypes)
-        {
             _mockCityService
                 .Setup(s => s.BuildBuildingAsync(cityId, buildingType))
                 .ReturnsAsync(true);
-        }
 
         // Act & Assert
         foreach (var buildingType in buildingTypes)
@@ -607,4 +605,3 @@ public class CityControllerTests
 
     #endregion
 }
-

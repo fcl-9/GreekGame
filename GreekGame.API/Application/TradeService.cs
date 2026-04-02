@@ -7,10 +7,7 @@ public class TradeService : ITradeService
 {
     private readonly GameDbContext _db;
 
-    public TradeService(GameDbContext db)
-    {
-        _db = db;
-    }
+    public TradeService(GameDbContext db) => _db = db;
 
     public async Task<bool> BuyFood(Guid cityId, int amount)
     {
@@ -22,7 +19,7 @@ public class TradeService : ITradeService
 
         var cost = market.FoodPrice * amount;
 
-        if(city.Money < cost)
+        if (city.Money < cost)
             return false;
 
         city.Money -= cost;

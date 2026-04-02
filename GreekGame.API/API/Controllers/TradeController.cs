@@ -9,10 +9,7 @@ public class TradeController : ControllerBase
 {
     private readonly ITradeService _tradeService;
 
-    public TradeController(ITradeService tradeService)
-    {
-        _tradeService = tradeService;
-    }
+    public TradeController(ITradeService tradeService) => _tradeService = tradeService;
 
     [HttpPost("{cityId}/buy")]
     public async Task<IActionResult> Buy(Guid cityId, int amount)

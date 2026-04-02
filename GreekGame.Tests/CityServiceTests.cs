@@ -1,16 +1,16 @@
-﻿namespace GreekGame.Tests;
-
-using GreekGame.API.Application;
+﻿using GreekGame.API.Application;
 using GreekGame.API.Domain;
 using GreekGame.API.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+
+namespace GreekGame.Tests;
 
 public class CityServiceTests
 {
     private GameDbContext CreateInMemoryContext()
     {
         var options = new DbContextOptionsBuilder<GameDbContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
 
         return new GameDbContext(options);
@@ -309,4 +309,3 @@ public class CityServiceTests
         Assert.Equal(2, updatedCity.Buildings.Count);
     }
 }
-

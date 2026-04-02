@@ -1,17 +1,14 @@
-﻿namespace GreekGame.API.Application;
-
-using GreekGame.API.Domain;
+﻿using GreekGame.API.Domain;
 using GreekGame.API.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+
+namespace GreekGame.API.Application;
 
 public class CityService : ICityService
 {
     private readonly GameDbContext _db;
 
-    public CityService(GameDbContext db)
-    {
-        this._db = db;
-    }
+    public CityService(GameDbContext db) => _db = db;
 
     public async Task<City> CreateCityAsync()
     {
@@ -36,21 +33,15 @@ public class CityService : ICityService
             .Include(c => c.Buildings)
             .FirstOrDefaultAsync(c => c.Id == cityId);
 
-        if (city is null)
-        {
-            return false;
-        }
+        if (city is null) return false;
 
         var cost = BuildingUpgrades.GetBuildingCost(buildingType);
 
-        if (city.Money <= cost)
-        {
-            return false;
-        }
+        if (city.Money <= cost) return false;
 
         city.Money -= cost;
 
-        city.Buildings.Add(new Building()
+        city.Buildings.Add(new Building
         {
             Id = Guid.NewGuid(),
             CityId = cityId,
@@ -66,19 +57,13 @@ public class CityService : ICityService
     {
         var building = await _db.Buildings.FindAsync(buildingId);
 
-        if (building is null)
-        {
-            return false;
-        }
+        if (building is null) return false;
 
         var cost = BuildingUpgrades.GetUpgradeCost(building.Type, building.Level);
 
         var city = await _db.Cities.FindAsync(building.CityId);
 
-        if (city is null || city.Money < cost)
-        {
-            return false;
-        }
+        if (city is null || city.Money < cost) return false;
 
         city.Money -= cost;
         building.Level += 1;
@@ -88,8 +73,5 @@ public class CityService : ICityService
         return true;
     }
 
-    public Task<City?> GetCityAsync(Guid id)
-    {
-        return _db.Cities.FindAsync(id).AsTask();
-    }
+    public Task<City?> GetCityAsync(Guid id) => _db.Cities.FindAsync(id).AsTask();
 }

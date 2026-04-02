@@ -1,7 +1,7 @@
-﻿namespace GreekGame.Tests;
-
-using GreekGame.API.Application;
+﻿using GreekGame.API.Application;
 using GreekGame.API.Domain;
+
+namespace GreekGame.Tests;
 
 public class BuildingUpgradesTests
 {
@@ -54,4 +54,3 @@ public class BuildingUpgradesTests
         Assert.Equal(0m, houseCost);
     }
 }
-

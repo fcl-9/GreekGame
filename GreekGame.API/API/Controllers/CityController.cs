@@ -1,8 +1,8 @@
-﻿namespace GreekGame.API.API.Controllers;
-
-using Application;
-using Domain;
+﻿using GreekGame.API.Application;
+using GreekGame.API.Domain;
 using Microsoft.AspNetCore.Mvc;
+
+namespace GreekGame.API.API.Controllers;
 
 [ApiController]
 [Route("api/cities")]
@@ -10,10 +10,7 @@ public class CitiesController : ControllerBase
 {
     private readonly ICityService _cityService;
 
-    public CitiesController(ICityService cityService)
-    {
-        this._cityService = cityService;
-    }
+    public CitiesController(ICityService cityService) => _cityService = cityService;
 
     [HttpPost]
     public async Task<IActionResult> Create()

@@ -18,112 +18,112 @@ jobs:
     name: Build and Test
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: Display .NET version
-      run: dotnet --version
+      - name: Display .NET version
+        run: dotnet --version
 
-    - name: Restore dependencies
-      run: dotnet restore ${{ env.SOLUTION_PATH }}
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.SOLUTION_PATH }}
 
-    - name: Check code formatting
-      run: dotnet format --verify-no-changes --verbosity diagnostic
-      continue-on-error: true
+      - name: Check code formatting
+        run: dotnet format --verify-no-changes --verbosity diagnostic
+        continue-on-error: true
 
-    - name: Build
-      run: dotnet build ${{ env.SOLUTION_PATH }} --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+      - name: Build
+        run: dotnet build ${{ env.SOLUTION_PATH }} --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
 
-    - name: Run tests with coverage
-      run: |
-        dotnet test ${{ env.SOLUTION_PATH }} \
-          --configuration ${{ env.BUILD_CONFIGURATION }} \
-          --no-build \
-          --verbosity normal \
-          --collect:"XPlat Code Coverage" \
-          --results-directory ./coverage \
-          --logger "trx;LogFileName=test-results.trx"
+      - name: Run tests with coverage
+        run: |
+          dotnet test ${{ env.SOLUTION_PATH }} \
+            --configuration ${{ env.BUILD_CONFIGURATION }} \
+            --no-build \
+            --verbosity normal \
+            --collect:"XPlat Code Coverage" \
+            --results-directory ./coverage \
+            --logger "trx;LogFileName=test-results.trx"
 
-    - name: Generate coverage report
-      if: always()
-      run: |
-        dotnet tool install --global dotnet-reportgenerator-globaltool
-        reportgenerator -reports:./coverage/**/*.xml -targetdir:./coverage-report -reporttypes:Html;TextSummary;MarkdownSummary
-      continue-on-error: true
+      - name: Generate coverage report
+        if: always()
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator -reports:./coverage/**/*.xml -targetdir:./coverage-report -reporttypes:Html;TextSummary;MarkdownSummary
+        continue-on-error: true
 
-    - name: Upload coverage reports
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report
-        path: ./coverage-report/
-      continue-on-error: true
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: ./coverage-report/
+        continue-on-error: true
 
-    - name: Upload test results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results
-        path: ./coverage/
-      continue-on-error: true
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ./coverage/
+        continue-on-error: true
 
-#  docker-build:
-#    runs-on: ubuntu-latest
-#    name: Build Docker Image
-#    needs: build-and-test
-#
-#    steps:
-#    - name: Checkout code
-#      uses: actions/checkout@v4
-#
-#    - name: Set up Docker Buildx
-#      uses: docker/setup-buildx-action@v3
-#
-#    - name: Build Docker image
-#      uses: docker/build-push-action@v5
-#      with:
-#        context: ./GreekGame.API
-#        push: false
-#        tags: greekgame-api:latest
-#        cache-from: type=gha
-#        cache-to: type=gha,mode=max
+  #  docker-build:
+  #    runs-on: ubuntu-latest
+  #    name: Build Docker Image
+  #    needs: build-and-test
+  #
+  #    steps:
+  #    - name: Checkout code
+  #      uses: actions/checkout@v4
+  #
+  #    - name: Set up Docker Buildx
+  #      uses: docker/setup-buildx-action@v3
+  #
+  #    - name: Build Docker image
+  #      uses: docker/build-push-action@v5
+  #      with:
+  #        context: ./GreekGame.API
+  #        push: false
+  #        tags: greekgame-api:latest
+  #        cache-from: type=gha
+  #        cache-to: type=gha,mode=max
 
   security-scan:
     runs-on: ubuntu-latest
     name: Security Scan
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: Restore dependencies
-      run: dotnet restore ${{ env.SOLUTION_PATH }}
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.SOLUTION_PATH }}
 
-    - name: Install security analyzers
-      run: dotnet add package SecurityCodeScan.VS2019 -v 5.6.10
-      continue-on-error: true
+      - name: Install security analyzers
+        run: dotnet add package SecurityCodeScan.VS2019 -v 5.6.10
+        continue-on-error: true
 
-    - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@master
-      with:
-        scan-type: 'fs'
-        scan-ref: '.'
-        format: 'sarif'
-        output: 'trivy-results.sarif'
-      continue-on-error: true
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+        continue-on-error: true
 
-    - name: Upload Trivy results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: 'trivy-results.sarif'
-      continue-on-error: true
+      - name: Upload Trivy results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+        continue-on-error: true
